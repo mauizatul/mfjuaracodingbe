@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>BizPage Bootstrap Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    <div th:replace="partials/page_css_front.html :: css"></div>
+    <link th:href="@{/css/detail_article.css}" rel="stylesheet">
+
+    <!-- =======================================================
+      Theme Name: BizPage
+      Theme URL: https://bootstrapmade.com/bizpage-bootstrap-business-template/
+      Author: BootstrapMade.com
+      License: https://bootstrapmade.com/license/
+    ======================================================= -->
+</head>
+<body>
+<header id="header" class="article">
+    <div class="container-fluid">
+
+        <div id="logo" class="pull-left">
+            <h1><a href="#intro" class="scrollto">BizPage</a></h1>
+        </div>
+
+        <nav id="nav-menu-container">
+            <ul class="nav-menu">
+                <li class="menu-active"><a href="/">Home</a></li>
+                <li><a href="#article">article</a></li>
+                <li>
+                    <a th:if="${USR_IDZ != null}" href="/api/check/admin">dashboard</a>
+                </li>
+                <li>
+                    <a th:if="${USR_IDZ != null}" href="/api/check/logout">logout</a>
+                </li>
+                <li>
+                    <a th:if="${USR_IDZ == null}" href="/api/check/register">Register</a>
+                </li>
+                <li>
+                    <a th:if="${USR_IDZ == null}" href="/api/check/signin">Sign In</a>
+                </li>
+            </ul>
+        </nav><!-- #nav-menu-container -->
+    </div>
+</header><!-- #header -->
+
+<div id="main-wrapper" class="article_detail">
+    <section class="detail-content">
+        <div class="banner-teks">
+            <div class="category">Kategori</div>
+            <div class="title">Ini Adalah Title</div>
+            <div class="border-bot-title"></div>
+            <img alt="" src="https://images.freeimages.com/images/large-previews/31a/traverse-1234278.jpg" style="height:1128px; width:1366px">
+            <div class="body-content">
+                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                </p>
+
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="separate-border"></div>
+    </section>
+</div>
+
+<tbody>
+<!--<tr th:each = "student: ${students}">-->
+<!--  <td th:text = "s${tudent.firstName}"></td>-->
+<td th:utext="${students.firstName}"></td>
+<td th:utext="${students.lastName}"></td>
+<td th:utext="${students.email}"></td>
+<!--</tr>-->
+</tbody>
+
+<!--==========================
+  Footer
+============================-->
+<footer id="footer">
+    <div class="container">
+        <div class="copyright">
+            &copy; Copyright <strong>BizPage</strong>. All Rights Reserved
+        </div>
+        <div class="credits">
+            <!--
+              All the links in the footer should remain intact.
+              You can delete the links only if you purchased the pro version.
+              Licensing information: https://bootstrapmade.com/license/
+              Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=BizPage
+            -->
+            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+        </div>
+    </div>
+</footer><!-- #footer -->
+
+<a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+<!-- Uncomment below i you want to use a preloader -->
+<!-- <div id="preloader"></div> -->
+
+<div th:replace="partials/page_js_front.html :: js"></div>
+
+</body>
+</html>

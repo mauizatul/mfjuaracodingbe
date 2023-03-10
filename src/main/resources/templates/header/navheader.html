@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <div th:replace="partials/page_css_front.html :: css"></div>
+</head>
+<body>
+    <div class="navbar" th:fragment="navapalah">
+        <div class="wrapper">
+            <div id="logo" class="pull-left">
+                <h1><a href="/" class="scrollto">FrontPage</a></h1>
+            </div>
+            <div class="menu">
+                <ul>
+                    <li>
+                        <a th:href="@{/api/check/admin}">Home</a>
+                    </li>
+
+                    <th:block th:if="${USR_IDZ != null}" th:utext="${HTML_MENUZ}" />
+
+                    <li>
+                        <a th:if="${USR_IDZ != null}" href="/api/check/logout">logout</a>
+                    </li>
+                    <li>
+                        <a th:if="${USR_IDZ == null}" href="/api/check/register">Register</a>
+                    </li>
+                    <li>
+                        <a th:if="${USR_IDZ == null}" href="/api/check/signin">Sign In</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
