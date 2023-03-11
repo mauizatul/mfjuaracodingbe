@@ -17,9 +17,8 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/api/school")
 public class StudentController {
-	
-	private StudentService studentService;
 
+	private StudentService studentService;
 	private MappingAttribute mappingAttribute = new MappingAttribute();
 	private Map<String,Object> objectMapper = new HashMap<String,Object>();
 
