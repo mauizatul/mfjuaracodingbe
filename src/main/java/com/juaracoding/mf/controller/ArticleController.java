@@ -13,52 +13,72 @@ import com.juaracoding.mf.service.ArticleService;
 import com.juaracoding.mf.utils.MappingAttribute;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
-import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestController
-@RequestMapping("/api/articles/")
+@Controller
+@RequestMapping("/api/articles2")
 public class ArticleController {
     private ArticleService articleService;
-
-    private String[] strExcep = new String[2];
-
     private MappingAttribute mappingAttribute = new MappingAttribute();
-
     private Map<String,Object> objectMapper = new HashMap<String,Object>();
-
     @Autowired
     private ModelMapper modelMapper;
-
     @Autowired
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
     }
 
-    @GetMapping("v1/list")
+    // display list of article
+    @GetMapping("/show")
     public String viewHomePage(Model model, WebRequest request) {
         mappingAttribute.setAttribute(model,objectMapper,request);//untuk set session
         if(request.getAttribute("USR_ID",1)==null){
             return "redirect:/api/check/logout";
         }
 //        return findPaginated(1, "firstName", "asc", model,request);
-        model.addAttribute("articles", articleService.getAllArticles());
-        return "articles";
+        model.addAttribute("listArticles", articleService.getAllArticles());
+        return "articles2";
     }
 
-    @PostMapping("v1/sv")
-    public ResponseEntity<Object> saveProduct(@Valid
-                                              @RequestBody Article article
-    )
-    {
-        return articleService.saveArticle(article);
+    @PostMapping("/saveArticle")
+    public String saveArticle(@ModelAttribute("article") Article article,Model model, WebRequest request) {
+        mappingAttribute.setAttribute(model,objectMapper,request);//untuk set session
+        if(request.getAttribute("USR_ID",1)==null){
+            return "redirect:/api/check/logout";
+        }
+        // save article to database
+        articleService.saveArticle(article);
+        return "redirect:/api/";
     }
 
-
+//    @GetMapping("/page/{pageNo}")
+//    public String findPaginated(@PathVariable (value = "pageNo") int pageNo,
+//                                @RequestParam("sortField") String sortField,
+//                                @RequestParam("sortDir") String sortDir,
+//                                Model model,WebRequest request) {
+//        mappingAttribute.setAttribute(model,objectMapper,request);//untuk set session
+//        if(request.getAttribute("USR_ID",1)==null){
+//            return "redirect:/api/check/logout";
+//        }
+//        int pageSize = 5;
+//
+//        Page<Article> page = articleService.findPaginated(pageNo, pageSize, sortField, sortDir);
+//        List<Article> listArticles = page.getContent();
+//
+//        model.addAttribute("currentPage", pageNo);
+//        model.addAttribute("totalPages", page.getTotalPages());
+//        model.addAttribute("totalItems", page.getTotalElements());
+//        model.addAttribute("sortField", sortField);
+//        model.addAttribute("sortDir", sortDir);
+//        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+//
+//        model.addAttribute("listArticles", listArticles);
+//        return "index";
+//    }
 }

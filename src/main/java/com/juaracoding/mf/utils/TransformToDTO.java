@@ -65,6 +65,19 @@ public class TransformToDTO {
         return mapz;
     }
 
+    public Map<String,Object> transformObjectDataSave(Map<String,Object> mapz,Long idDataSave, Map<String,String> searchParams)//<PENAMBAHAN 07-03-2023>
+    {
+        mapz.put("content",new Object());
+        mapz.put("totalItems",0);
+        mapz.put("totalPages",0);
+        mapz.put("sort","asc");
+        mapz.put("idDataSave",idDataSave);
+        mapz.put("numberOfElements",0);
+        mapz.put("searchParam",searchParams);
+
+        return mapz;
+    }
+
 
 
 

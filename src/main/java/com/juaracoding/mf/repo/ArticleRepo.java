@@ -9,7 +9,15 @@ Version 1.1
 */
 
 import com.juaracoding.mf.model.Article;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface ArticleRepo extends JpaRepository<Article,Long> {
+    List<Article> findByIsShow(byte isShow);
+    Page<Article> findByIsShow(Pageable page , byte byteIsDelete);
+    Page<Article> findByIsShowAndTitleArticleContainsIgnoreCase(Pageable page , byte byteIsDelete, String values);
+    Page<Article> findByIsShowAndIdArticleContainsIgnoreCase(Pageable page , byte byteIsDelete, Long values);
 }

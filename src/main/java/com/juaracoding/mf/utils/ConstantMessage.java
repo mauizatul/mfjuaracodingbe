@@ -126,4 +126,10 @@ public class ConstantMessage {
 
     public final static String WARNING_CATPROD_MAX_LENGTH_NAME  = "MAKSIMAL NAMA KATEGORI PRODUK ADALAH 40 KARAKTER";
     public final static String WARNING_CATPROD_NAME_CANNOT_EMPTY  = "NAMA KATEGORI PRODUK TIDAK BOLEH KOSONG";
+
+    /*
+        DEMO
+     */
+
+    public final static String WARNING_DEMO_NOT_EXISTS = "DEMO TIDAK DOTEMUKAN";
 }
