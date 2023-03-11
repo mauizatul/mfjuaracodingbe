@@ -163,17 +163,17 @@
 
 
   // Article isotope and filter
-  var articleIsotope = $('.article-container').isotope({
-    itemSelector: '.article-item',
-    layoutMode: 'fitRows'
-  });
-
-  $('#article-flters li').on( 'click', function() {
-    $("#article-flters li").removeClass('filter-active');
-    $(this).addClass('filter-active');
-
-    articleIsotope.isotope({ filter: $(this).data('filter') });
-  });
+//  var articleIsotope = $('.article-container').isotope({
+//    itemSelector: '.article-item',
+//    layoutMode: 'fitColumns'
+//  });
+//
+//  $('#article-flters li').on( 'click', function() {
+//    $("#article-flters li").removeClass('filter-active');
+//    $(this).addClass('filter-active');
+//
+//    articleIsotope.isotope({ filter: $(this).data('filter') });
+//  });
 
   
 

@@ -49,16 +49,11 @@
     <section class="detail-content">
         <div class="banner-teks">
             <div class="category">Kategori</div>
-            <div class="title">Ini Adalah Title</div>
+            <div th:utext="${articles.titleArticle}" class="title">Ini Adalah Title</div>
             <div class="border-bot-title"></div>
-            <img alt="" src="https://images.freeimages.com/images/large-previews/31a/traverse-1234278.jpg" style="height:1128px; width:1366px">
+            <img alt="" th:src="${articles.imageArticle}" style="height:1128px; width:1366px">
             <div class="body-content">
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                </p>
-
+                <p>[[${articles.bodyArticle}]]</p>
             </div>
         </div>
     </section>
@@ -70,9 +65,9 @@
 <tbody>
 <!--<tr th:each = "student: ${students}">-->
 <!--  <td th:text = "s${tudent.firstName}"></td>-->
-<td th:utext="${students.firstName}"></td>
-<td th:utext="${students.lastName}"></td>
-<td th:utext="${students.email}"></td>
+<!--<td th:utext="${articles.titleArticle}"></td>-->
+<!--<td th:utext="${students.lastName}"></td>-->
+<!--<td th:utext="${students.email}"></td>-->
 <!--</tr>-->
 </tbody>
 

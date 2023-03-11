@@ -647,7 +647,9 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 /* article Section
 --------------------------------*/
-
+.row.article-container {
+    justify-content: center;
+}
 #article {
   padding: 60px 0;
 }
