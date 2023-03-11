@@ -9,8 +9,7 @@ Created on 3/7/2023 5:20 PM
 Version 1.0
 */
 
-import com.juaracoding.mf.configuration.OtherConfig;
-import com.juaracoding.mf.service.StudentService;
+import com.juaracoding.mf.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,19 +24,13 @@ import java.util.Map;
 @Controller
 public class ViewController {
     @Autowired
-    private StudentService studentService;
+    private ArticleService articleService;
     private MappingAttribute mappingAttribute = new MappingAttribute();
     private Map<String,Object> objectMapper = new HashMap<String,Object>();
 
-    @GetMapping("/aaa")
-    public String listStudents(Model model) {
-        model.addAttribute("students", studentService.getAllStudents());
-        return "home";
-    }
-
-    @GetMapping("/students/{id}")
-    public String editStudentForm(@PathVariable("id") Long Id, Model model, WebRequest request) {
-        model.addAttribute("students", studentService.getStudentById(Id));
+    @GetMapping("/articles/{idArticle}")
+    public String viewArticleDetail(@PathVariable("idArticle") Long Id, Model model, WebRequest request) {
+        model.addAttribute("articles", articleService.getArticleById(Id));
         return "artikel_detail";
     }
 
