@@ -28,6 +28,9 @@ public class Article {
     @Column(name = "TitleArticle")
     private String titleArticle;
 
+    @Column(name = "Slug")
+    private String slug;
+
     @NotEmpty
     @NotNull
     @Column(name = "BodyArticle")
@@ -81,6 +84,14 @@ public class Article {
 
     public void setTitleArticle(String titleArticle) {
         this.titleArticle = titleArticle;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
 
     public String getBodyArticle() {
