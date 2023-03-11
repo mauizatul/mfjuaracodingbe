@@ -2,7 +2,7 @@ package com.juaracoding.mf.controller;
 
 import cn.apiclub.captcha.Captcha;
 import com.juaracoding.mf.model.Userz;
-import com.juaracoding.mf.service.StudentService;
+import com.juaracoding.mf.service.ArticleService;
 import com.juaracoding.mf.utils.CaptchaUtils;
 import com.juaracoding.mf.utils.MappingAttribute;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +19,19 @@ import java.util.Map;
 @RequestMapping("/")
 public class MainController {
 
-    private StudentService studentService;
+    private ArticleService articleService;
     private MappingAttribute mappingAttribute = new MappingAttribute();
     private Map<String,Object> objectMapper = new HashMap<String,Object>();
 
     @Autowired
-    public MainController(StudentService studentService) {
-        this.studentService = studentService;
+    public MainController(ArticleService articleService) {
+        this.articleService = articleService;
     }
 
     @GetMapping("/")
     public String pageTwo(Model model, WebRequest request)
     {
-        model.addAttribute("students", studentService.getAllStudents());
+        model.addAttribute("articles", articleService.getArticlesToShow());
 
         Captcha captcha = CaptchaUtils.createCaptcha(150, 60);
 
