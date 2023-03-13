@@ -8,16 +8,20 @@ Created on 07/03/2023 20:22
 Version 1.1
 */
 
+import com.juaracoding.mf.configuration.OtherConfig;
 import com.juaracoding.mf.model.Article;
 import com.juaracoding.mf.service.ArticleService;
+import com.juaracoding.mf.utils.ConstantMessage;
 import com.juaracoding.mf.utils.MappingAttribute;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -34,13 +38,16 @@ public class ArticleController {
     // display list of article
     @GetMapping("/show")
     public String showArticles(Model model, WebRequest request) {
-        mappingAttribute.setAttribute(model,objectMapper,request);//untuk set session
-        if(request.getAttribute("USR_ID",1)==null){
-            return "redirect:/api/check/logout";
+        if(OtherConfig.getFlagSessionValidation().equals("y"))
+        {
+            mappingAttribute.setAttribute(model,objectMapper,request);//untuk set session
+            if(request.getAttribute("USR_ID",1)==null){
+                return "redirect:/api/check/logout";
+            }
         }
-//        return findPaginated(1, "firstName", "asc", model,request);
-        model.addAttribute("listArticles", articleService.getAllArticles());
-        return "article/article";
+        return findPaginated(1, "idArticle", "asc", model,request);
+//        model.addAttribute("listArticles", articleService.getAllArticles());
+//        return "article/article";
     }
 
     @GetMapping("/showNewArticleForm")
@@ -63,34 +70,38 @@ public class ArticleController {
             return "redirect:/api/check/logout";
         }
         // save article to database
-        articleService.saveArticle(article);
+        objectMapper = articleService.saveArticle(article, request);
+        if(objectMapper.get("message").toString().equals(ConstantMessage.ERROR_FLOW_INVALID))//AUTO LOGOUT JIKA ADA PESAN INI
+        {
+            return "redirect:/api/check/logout";
+        }
+
         return "redirect:/api/articles2/show";
     }
 
+    @GetMapping("/page/{pageNo}")
+    public String findPaginated(@PathVariable (value = "pageNo") int pageNo,
+                                @RequestParam("sortField") String sortField,
+                                @RequestParam("sortDir") String sortDir,
+                                Model model,WebRequest request) {
+        mappingAttribute.setAttribute(model,objectMapper,request);//untuk set session
+        if(request.getAttribute("USR_ID",1)==null){
+            return "redirect:/api/check/logout";
+        }
 
+        int pageSize = 5;
 
-//    @GetMapping("/page/{pageNo}")
-//    public String findPaginated(@PathVariable (value = "pageNo") int pageNo,
-//                                @RequestParam("sortField") String sortField,
-//                                @RequestParam("sortDir") String sortDir,
-//                                Model model,WebRequest request) {
-//        mappingAttribute.setAttribute(model,objectMapper,request);//untuk set session
-//        if(request.getAttribute("USR_ID",1)==null){
-//            return "redirect:/api/check/logout";
-//        }
-//        int pageSize = 5;
-//
-//        Page<Article> page = articleService.findPaginated(pageNo, pageSize, sortField, sortDir);
-//        List<Article> listArticles = page.getContent();
-//
-//        model.addAttribute("currentPage", pageNo);
-//        model.addAttribute("totalPages", page.getTotalPages());
-//        model.addAttribute("totalItems", page.getTotalElements());
-//        model.addAttribute("sortField", sortField);
-//        model.addAttribute("sortDir", sortDir);
-//        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
-//
-//        model.addAttribute("listArticles", listArticles);
-//        return "index";
-//    }
+        Page<Article> page = articleService.findPaginated(pageNo, pageSize, sortField, sortDir);
+        List<Article> listArticles = page.getContent();
+
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+
+        model.addAttribute("listArticles", listArticles);
+        return "article/article";
+    }
 }
