@@ -11,7 +11,6 @@ Version 1.1
 import com.juaracoding.mf.model.Article;
 import com.juaracoding.mf.service.ArticleService;
 import com.juaracoding.mf.utils.MappingAttribute;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,22 +27,33 @@ public class ArticleController {
     private MappingAttribute mappingAttribute = new MappingAttribute();
     private Map<String,Object> objectMapper = new HashMap<String,Object>();
     @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
     }
 
     // display list of article
     @GetMapping("/show")
-    public String viewHomePage(Model model, WebRequest request) {
+    public String showArticles(Model model, WebRequest request) {
         mappingAttribute.setAttribute(model,objectMapper,request);//untuk set session
         if(request.getAttribute("USR_ID",1)==null){
             return "redirect:/api/check/logout";
         }
 //        return findPaginated(1, "firstName", "asc", model,request);
         model.addAttribute("listArticles", articleService.getAllArticles());
-        return "articles2";
+        return "article/article";
+    }
+
+    @GetMapping("/showNewArticleForm")
+    public String showNewArticleForm(Model model, WebRequest request) {
+        mappingAttribute.setAttribute(model,objectMapper,request);//untuk set session
+        if(request.getAttribute("USR_ID",1)==null){
+            return "redirect:/api/check/logout";
+        }
+
+        // create model attribute to bind form data
+        Article article = new Article();
+        model.addAttribute("article", article);
+        return "article/create_article";
     }
 
     @PostMapping("/saveArticle")
@@ -54,8 +64,10 @@ public class ArticleController {
         }
         // save article to database
         articleService.saveArticle(article);
-        return "redirect:/api/";
+        return "redirect:/api/articles2/show";
     }
+
+
 
 //    @GetMapping("/page/{pageNo}")
 //    public String findPaginated(@PathVariable (value = "pageNo") int pageNo,

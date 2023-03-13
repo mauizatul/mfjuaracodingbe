@@ -16,11 +16,10 @@ import java.util.Date;
 @Entity
 @Table(name = "MstArticle")
 public class Article {
-    private static final long serialversionUID = 1L;
 
     @Id
-    @Column(name = "IDArticle")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "IDArticle")
     private Long idArticle;
 
     @NotEmpty
@@ -33,22 +32,13 @@ public class Article {
 
     @NotEmpty
     @NotNull
-    @Column(name = "BodyArticle")
-    private String bodyArticle;
-
-    @NotEmpty
-    @NotNull
     @Column(name = "ImageArticle")
     private String imageArticle;
 
-    @ManyToOne
-    @JoinColumn(name = "IDUser")
-    private Userz user;
-
-    @ManyToOne
-    @JoinColumn(name = "IDCategoryArticle")
-    private CategoryArticle categoryArticle;
-
+    @NotEmpty
+    @NotNull
+    @Column(name = "BodyArticle")
+    private String bodyArticle;
 
     /*
        start audit trails
@@ -94,14 +84,6 @@ public class Article {
         this.slug = slug;
     }
 
-    public String getBodyArticle() {
-        return bodyArticle;
-    }
-
-    public void setBodyArticle(String bodyArticle) {
-        this.bodyArticle = bodyArticle;
-    }
-
     public String getImageArticle() {
         return imageArticle;
     }
@@ -110,20 +92,12 @@ public class Article {
         this.imageArticle = imageArticle;
     }
 
-    public Userz getUser() {
-        return user;
+    public String getBodyArticle() {
+        return bodyArticle;
     }
 
-    public void setUser(Userz user) {
-        this.user = user;
-    }
-
-    public CategoryArticle getCategoryArticle() {
-        return categoryArticle;
-    }
-
-    public void setCategoryArticle(CategoryArticle categoryArticle) {
-        this.categoryArticle = categoryArticle;
+    public void setBodyArticle(String bodyArticle) {
+        this.bodyArticle = bodyArticle;
     }
 
     public Date getCreatedDate() {
