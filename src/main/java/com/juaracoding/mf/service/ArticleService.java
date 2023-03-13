@@ -24,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.*;
 
@@ -75,8 +76,34 @@ public class ArticleService {
 //                HttpStatus.CREATED,null,null,null);
 //    }
 
-    public void saveArticle(Article article) {
-        this.articleRepo.save(article);
+    public Map<String, Object> saveArticle(Article article, WebRequest request) {
+        Object strUserIdz = request.getAttribute("USR_ID",1);
+
+        try {
+            if(strUserIdz==null)
+            {
+                return new ResponseHandler().generateModelAttribut(ConstantMessage.ERROR_FLOW_INVALID,
+                        HttpStatus.NOT_ACCEPTABLE,null,"FV02001",request);
+            }
+            article.setCreatedBy(Integer.parseInt(strUserIdz.toString()));
+            article.setCreatedDate(new Date());
+            articleRepo.save(article);
+        } catch (Exception e) {
+            strExceptionArr[1] = "saveMenuHeader(MenuHeader menuHeader, WebRequest request) --- LINE 92";
+            LoggingFile.exceptionStringz(strExceptionArr, e, OtherConfig.getFlagLogging());
+            return new ResponseHandler().generateModelAttribut(ConstantMessage.ERROR_SAVE_FAILED,
+                    HttpStatus.BAD_REQUEST, null, "FE02001", request);
+        }
+        return new ResponseHandler().generateModelAttribut(ConstantMessage.SUCCESS_SAVE,
+                HttpStatus.CREATED, null, null, request);
+    }
+
+    public Page<Article> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection) {
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
+                Sort.by(sortField).descending();
+
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
+        return this.articleRepo.findAll(pageable);
     }
 
 }
