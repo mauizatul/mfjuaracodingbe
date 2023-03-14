@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="ISO-8859-1">
-  <title>Save Article</title>
+  <title>Update Article</title>
   <link rel="stylesheet"
         href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
@@ -17,10 +17,9 @@
 <div class="container my-2">
   <h1>Article</h1>
   <hr>
-  <h2>Save Article</h2>
+  <h2>Update Article</h2>
 
-
-  <form th:action="@{/api/articles2/saveArticle}" th:object="${article}"
+  <form th:action="@{/api/articles2/update/{id} (id=${article.idArticle})}" th:object="${article}"
         method="POST">
 
     <div class="form-group">
@@ -55,45 +54,45 @@
         <option value="" selected="selected" disabled hidden="hidden">---pilih---</option>
         <option value="1">Tampil</option>
         <option value="0">Sembunyikan</option>
-<!--        <option-->
-<!--                th:each="childArrays:${data.get('searchParam')}"-->
-<!--                th:value="${childArrays.key}"-->
-<!--                th:text="${childArrays.value}"-->
-<!--                th:selected="${childArrays.key == columnFirst}">-->
-<!--        </option>-->
+        <!--        <option-->
+        <!--                th:each="childArrays:${data.get('searchParam')}"-->
+        <!--                th:value="${childArrays.key}"-->
+        <!--                th:text="${childArrays.value}"-->
+        <!--                th:selected="${childArrays.key == columnFirst}">-->
+        <!--        </option>-->
       </select>
     </div>
 
-<!--    <div class="form-group">-->
-<!--      <label for="titleArticle">Created By</label>-->
-<!--      <input type="text" th:field="*{createdBy}"-->
-<!--             placeholder="Created By" class="form-control" id="createdBy">-->
-<!--    </div>-->
+    <!--    <div class="form-group">-->
+    <!--      <label for="titleArticle">Created By</label>-->
+    <!--      <input type="text" th:field="*{createdBy}"-->
+    <!--             placeholder="Created By" class="form-control" id="createdBy">-->
+    <!--    </div>-->
 
 
-<!--    <div class="form-group">-->
-<!--      &lt;!&ndash;            <label for="category">Category</label>&ndash;&gt;-->
-<!--      <select th:field="*{idCategoryArticle}" id="category" class="form-control">-->
-<!--        <option value="">&#45;&#45; Select Category &#45;&#45;</option>-->
-<!--        &lt;!&ndash;                <option th:each="category : ${categories}"&ndash;&gt;-->
-<!--        &lt;!&ndash;                        th:value="${category.idCategoryArticle}"&ndash;&gt;-->
-<!--        &lt;!&ndash;                        th:text="${category.nameCategoryArticle}"&ndash;&gt;-->
-<!--        &lt;!&ndash;                        th:selected="${category.idCategoryArticle == article.idCategoryArticle}">&ndash;&gt;-->
-<!--        &lt;!&ndash;                </option>&ndash;&gt;-->
-<!--        &lt;!&ndash;                <option th:value="1">1</option>&ndash;&gt;-->
-<!--        <option th:each="category : ${categories}"-->
-<!--                th:value="${category.idCategoryArticle}"-->
-<!--                th:text="${category.name}">-->
-<!--        </option>-->
-<!--      </select>-->
-<!--    </div>-->
+    <!--    <div class="form-group">-->
+    <!--      &lt;!&ndash;            <label for="category">Category</label>&ndash;&gt;-->
+    <!--      <select th:field="*{idCategoryArticle}" id="category" class="form-control">-->
+    <!--        <option value="">&#45;&#45; Select Category &#45;&#45;</option>-->
+    <!--        &lt;!&ndash;                <option th:each="category : ${categories}"&ndash;&gt;-->
+    <!--        &lt;!&ndash;                        th:value="${category.idCategoryArticle}"&ndash;&gt;-->
+    <!--        &lt;!&ndash;                        th:text="${category.nameCategoryArticle}"&ndash;&gt;-->
+    <!--        &lt;!&ndash;                        th:selected="${category.idCategoryArticle == article.idCategoryArticle}">&ndash;&gt;-->
+    <!--        &lt;!&ndash;                </option>&ndash;&gt;-->
+    <!--        &lt;!&ndash;                <option th:value="1">1</option>&ndash;&gt;-->
+    <!--        <option th:each="category : ${categories}"-->
+    <!--                th:value="${category.idCategoryArticle}"-->
+    <!--                th:text="${category.name}">-->
+    <!--        </option>-->
+    <!--      </select>-->
+    <!--    </div>-->
 
-<!--    <div class="form-group">-->
-<!--      <label for="thumbnail">Thumbnail</label>-->
-<!--      <input type="file" name="thumbnail" id="thumbnail" accept="image/*" class="form-control-file">-->
-<!--    </div>-->
+    <!--    <div class="form-group">-->
+    <!--      <label for="thumbnail">Thumbnail</label>-->
+    <!--      <input type="file" name="thumbnail" id="thumbnail" accept="image/*" class="form-control-file">-->
+    <!--    </div>-->
 
-    <button type="submit" class="btn btn-info"> Save Article</button>
+    <button type="submit" class="btn btn-info">Update Article</button>
     <a class="btn btn-info" th:href = "@{/api/articles2/show}">Back</a>
   </form>
 </div>

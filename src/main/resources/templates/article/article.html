@@ -51,7 +51,7 @@
         <span th:unless="${articles.isShow == 1}">Hidden</span>
       </td>
       <td>
-        <a href="" class="btn btn-primary">Update</a>
+        <a th:href="@{/api/articles2/update/{id}(id=${articles.idArticle})}" class="btn btn-primary">Update</a>
         <!--        <a href="" class="btn btn-danger">Delete</a>-->
       </td>
     </tr>

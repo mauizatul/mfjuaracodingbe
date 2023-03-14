@@ -10,6 +10,7 @@ Version 1.1
 
 import com.juaracoding.mf.configuration.OtherConfig;
 import com.juaracoding.mf.model.Article;
+import com.juaracoding.mf.model.Student;
 import com.juaracoding.mf.service.ArticleService;
 import com.juaracoding.mf.utils.ConstantMessage;
 import com.juaracoding.mf.utils.MappingAttribute;
@@ -65,8 +66,8 @@ public class ArticleController {
 
     @PostMapping("/saveArticle")
     public String saveArticle(@ModelAttribute("article") Article article,Model model, WebRequest request) {
-        mappingAttribute.setAttribute(model,objectMapper,request);//untuk set session
         if(request.getAttribute("USR_ID",1)==null){
+            mappingAttribute.setAttribute(model,objectMapper,request);//untuk set session
             return "redirect:/api/check/logout";
         }
         // save article to database
@@ -75,7 +76,42 @@ public class ArticleController {
         {
             return "redirect:/api/check/logout";
         }
+        return "redirect:/api/articles2/show";
+    }
 
+    @GetMapping("/update/{id}")
+    public String editArticleForm(@PathVariable("id") Long Id, Model model, WebRequest request) {
+        if(OtherConfig.getFlagSessionValidation().equals("y")) {
+            mappingAttribute.setAttribute(model, objectMapper, request);//untuk set session
+            if (request.getAttribute("USR_ID", 1) == null) {
+                return "redirect:/api/check/logout";
+            }
+        }
+        model.addAttribute("article", articleService.getArticleById(Id));
+        return "article/update_article";
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateArticle(@PathVariable("id") Long id,
+                                @ModelAttribute("article") Article article,
+                                Model model, WebRequest request) {
+        if(OtherConfig.getFlagSessionValidation().equals("y")) {
+            mappingAttribute.setAttribute(model, objectMapper, request);//untuk set session
+            if (request.getAttribute("USR_ID", 1) == null) {
+                return "redirect:/api/check/logout";
+            }
+        }
+        // get article from database by id
+        Article existingArticle = articleService.getArticleById(id);
+        existingArticle.setIdArticle(id);
+        existingArticle.setTitleArticle(article.getTitleArticle());
+        existingArticle.setSlug(article.getSlug());
+        existingArticle.setImageArticle(article.getImageArticle());
+        existingArticle.setBodyArticle(article.getBodyArticle());
+        existingArticle.setIsShow(article.getIsShow());
+
+        // save updated article object
+        articleService.updateArticle(existingArticle, request);
         return "redirect:/api/articles2/show";
     }
 

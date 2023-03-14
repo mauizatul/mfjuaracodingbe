@@ -11,7 +11,6 @@ Version 1.1
 import com.juaracoding.mf.configuration.OtherConfig;
 import com.juaracoding.mf.handler.ResponseHandler;
 import com.juaracoding.mf.model.Article;
-import com.juaracoding.mf.model.Employee;
 import com.juaracoding.mf.repo.ArticleRepo;
 import com.juaracoding.mf.utils.ConstantMessage;
 import com.juaracoding.mf.utils.LoggingFile;
@@ -21,7 +20,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.WebRequest;
@@ -41,44 +39,12 @@ public class ArticleService {
         this.articleRepo = articleRepo;
     }
 
-    public List<Article> getAllArticles() {
-        return articleRepo.findAll();
-    }
-
     public List<Article> getArticlesToShow() {
         return articleRepo.findByIsShow((byte) 1);
     }
 
-    public Article getArticleById(Long id) {
-        return articleRepo.findById(id).get();
-    }
-
-//    public void saveArticle(Article article) {
-//        this.articleRepo.save(article);
-//    }
-
-//    public ResponseEntity<Object> saveArticle(Article article)
-//    {
-//        String strMessage = ConstantMessage.SUCCESS_SAVE;
-//        try
-//        {
-//            articleRepo.save(article);
-//        }
-//        catch (Exception e)
-//        {
-//            strExceptionArr[1]="saveArticle(Article article)";
-//            LoggingFile.exceptionStringz(strExceptionArr,e, OtherConfig.getFlagLogging());
-//            return new ResponseHandler().generateResponse(ConstantMessage.ERROR_SAVE_FAILED,
-//                    HttpStatus.BAD_REQUEST,null,"FI02001",null);
-//        }
-//
-//        return new ResponseHandler().generateResponse(strMessage,
-//                HttpStatus.CREATED,null,null,null);
-//    }
-
     public Map<String, Object> saveArticle(Article article, WebRequest request) {
         Object strUserIdz = request.getAttribute("USR_ID",1);
-
         try {
             if(strUserIdz==null)
             {
@@ -87,6 +53,38 @@ public class ArticleService {
             }
             article.setCreatedBy(Integer.parseInt(strUserIdz.toString()));
             article.setCreatedDate(new Date());
+            articleRepo.save(article);
+        } catch (Exception e) {
+            strExceptionArr[1] = "saveMenuHeader(MenuHeader menuHeader, WebRequest request) --- LINE 92";
+            LoggingFile.exceptionStringz(strExceptionArr, e, OtherConfig.getFlagLogging());
+            return new ResponseHandler().generateModelAttribut(ConstantMessage.ERROR_SAVE_FAILED,
+                    HttpStatus.BAD_REQUEST, null, "FE02001", request);
+        }
+        return new ResponseHandler().generateModelAttribut(ConstantMessage.SUCCESS_SAVE,
+                HttpStatus.CREATED, null, null, request);
+    }
+
+    public Article getArticleById(long id) {
+        Optional<Article> optional = articleRepo.findById(id);
+        Article article = null;
+        if (optional.isPresent()) {
+            article = optional.get();
+        } else {
+            throw new RuntimeException(" Article not found for id :: " + id);
+        }
+        return article;
+    }
+
+    public Map<String, Object> updateArticle(Article article, WebRequest request) {
+        Object strUserIdz = request.getAttribute("USR_ID",1);
+        try {
+            if(strUserIdz==null)
+            {
+                return new ResponseHandler().generateModelAttribut(ConstantMessage.ERROR_FLOW_INVALID,
+                        HttpStatus.NOT_ACCEPTABLE,null,"FV02001",request);
+            }
+            article.setModifiedBy(Integer.parseInt(strUserIdz.toString()));
+            article.setModifiedDate(new Date());
             articleRepo.save(article);
         } catch (Exception e) {
             strExceptionArr[1] = "saveMenuHeader(MenuHeader menuHeader, WebRequest request) --- LINE 92";
