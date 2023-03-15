@@ -10,7 +10,6 @@ Version 1.1
 
 import com.juaracoding.mf.configuration.OtherConfig;
 import com.juaracoding.mf.model.Article;
-import com.juaracoding.mf.model.Student;
 import com.juaracoding.mf.service.ArticleService;
 import com.juaracoding.mf.utils.ConstantMessage;
 import com.juaracoding.mf.utils.MappingAttribute;
