@@ -163,10 +163,10 @@
 
 
   // Article isotope and filter
-//  var articleIsotope = $('.article-container').isotope({
-//    itemSelector: '.article-item',
-//    layoutMode: 'fitColumns'
-//  });
+  var articleIsotope = $('.article-container').isotope({
+    itemSelector: '.article-item',
+    layoutMode: 'fitRows'
+  });
 //
 //  $('#article-flters li').on( 'click', function() {
 //    $("#article-flters li").removeClass('filter-active');
