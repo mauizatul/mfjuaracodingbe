@@ -16,12 +16,14 @@ div.wrapper form {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 1px solid gray;
   width: 80vh;
 
   /* height: auto; */
   padding: 20px;
   border-radius: 5px;
+  -webkit-box-shadow: 0px 10px 34px -15px rgba(0, 0, 0, 0.24);
+  -moz-box-shadow: 0px 10px 34px -15px rgba(0, 0, 0, 0.24);
+  box-shadow: 0px 10px 34px -15px rgba(0, 0, 0, 0.24);
 
 }
 

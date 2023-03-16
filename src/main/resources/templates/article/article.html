@@ -3,17 +3,13 @@
 <head>
   <meta charset="ISO-8859-1">
   <title>All Articles</title>
-  <link th:href="@{/styles/style.css}" rel="stylesheet" />
-  <link th:href="@{/styles/navbar.css}" rel="stylesheet" />
-  <link th:href="@{/styles/banner.css}" rel="stylesheet" />
-  <link rel="stylesheet"
-        href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-        crossorigin="anonymous">
+
+  <div th:replace="partials/page_css_front.html :: css"></div>
+
 
 </head>
 <body>
-<div th:replace="header/navheader::navapalah"></div>
+<header th:replace="header/navheader::navapalah"></header>
 <div class="container my-2">
   <h1>Article List</h1>
 
@@ -22,22 +18,10 @@
   <table border="1" class = "table table-striped table-responsive-md">
     <thead class="table-dark">
     <tr>
-      <th>
-        <a class="text-light" th:href="@{'/page/' + ${currentPage} + '?sortField=idArticle&sortDir=' + ${reverseSortDir}}">
-          ID</a>
-      </th>
-      <th>
-        <a class="text-light" th:href="@{'/page/' + ${currentPage} + '?sortField=titleArticle&sortDir=' + ${reverseSortDir}}">
-          Article Title</a>
-      </th>
-      <th>
-        <a class="text-light" th:href="@{'/page/' + ${currentPage} + '?sortField=createdDate&sortDir=' + ${reverseSortDir}}">
-          Created Date</a>
-      </th>
-      <th>
-        <a class="text-light" th:href="@{'/page/' + ${currentPage} + '?sortField=isShow&sortDir=' + ${reverseSortDir}}">
-          Visible</a>
-      </th>
+      <th> ID </th>
+      <th> Article Title </th>
+      <th> Created Date </th>
+      <th> Show </th>
       <th> Actions </th>
     </tr>
     </thead>
@@ -69,15 +53,15 @@
 						<span th:unless="${currentPage != i}">[[${i}]]</span>  &nbsp; &nbsp;
 					</span>
       </div>
-      <div class = "col-sm-1">
-        <a th:if="${currentPage < totalPages}" th:href="@{'/api/articles2/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
-        <span th:unless="${currentPage < totalPages}">Next</span>
-      </div>
+<!--      <div class = "col-sm-1">-->
+<!--        <a th:if="${currentPage < totalPages}" th:href="@{'/api/articles2/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>-->
+<!--        <span th:unless="${currentPage < totalPages}">Next</span>-->
+<!--      </div>-->
 
-      <div class="col-sm-1">
-        <a th:if="${currentPage < totalPages}" th:href="@{'/api/articles2/page/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
-        <span th:unless="${currentPage < totalPages}">Last</span>
-      </div>
+<!--      <div class="col-sm-1">-->
+<!--        <a th:if="${currentPage < totalPages}" th:href="@{'/api/articles2/page/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>-->
+<!--        <span th:unless="${currentPage < totalPages}">Last</span>-->
+<!--      </div>-->
     </div>
   </div>
 </div>

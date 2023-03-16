@@ -2,22 +2,25 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <div th:replace="partials/page_css_front.html :: css"></div>
 </head>
 <body>
-    <div class="navbar" th:fragment="navapalah">
-        <div class="wrapper">
+<!--==========================
+  Header
+============================-->
+    <header id="header" th:fragment="navapalah">
+        <div class="container-fluid">
+
             <div id="logo" class="pull-left">
-                <h1><a href="/" class="scrollto">FrontPage</a></h1>
+                <h1><a href="/" class="scrollto">ArticLe</a></h1>
+                <!-- Uncomment below if you prefer to use an image logo -->
+                <!-- <a href="#intro"><img src="img/logo.png" alt="" title="" /></a>-->
             </div>
-            <div class="menu">
-                <ul>
-                    <li>
-                        <a th:href="@{/api/check/admin}">Home</a>
-                    </li>
+
+            <nav id="nav-menu-container">
+                <ul class="nav-menu">
+                    <li class="menu-active"><a th:href="@{/api/check/admin}">Home</a></li>
 
                     <th:block th:if="${USR_IDZ != null}" th:utext="${HTML_MENUZ}" />
-
                     <li>
                         <a th:if="${USR_IDZ != null}" href="/api/check/logout">logout</a>
                     </li>
@@ -28,8 +31,8 @@
                         <a th:if="${USR_IDZ == null}" href="/api/check/signin">Sign In</a>
                     </li>
                 </ul>
-            </div>
+            </nav><!-- #nav-menu-container -->
         </div>
-    </div>
+    </header><!-- #header -->
 </body>
 </html>

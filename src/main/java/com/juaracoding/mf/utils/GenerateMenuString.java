@@ -48,8 +48,8 @@ public class GenerateMenuString {
              mapx.entrySet()) {
             sBuild.setLength(0);
             strListMenuHtml = sBuild.append(strListMenuHtml).append("<li>")
-                    .append("<a href=\"#\">").append(strMap.getKey()).append("</a>")
-                    .append("<ul class=\"menu-dropdown\">").toString();
+                    .append("<a href=\"\">").append(strMap.getKey()).append("</a>")
+                    .append("<ul class=\"menu-has-children\">").toString();
             linkMenu = strMap.getValue();
 //            linkMenu = linkMenu.substring(0,linkMenu.length()-1);//menghilangkan tanda # di akhir
             strLinkArr = linkMenu.split("#");

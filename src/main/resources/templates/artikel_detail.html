@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>BizPage Bootstrap Template</title>
+    <title>[(${articles.titleArticle})]</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -17,28 +17,23 @@
     ======================================================= -->
 </head>
 <body>
-<header id="header" class="article">
+<!--==========================
+  Header
+============================-->
+<header id="header">
     <div class="container-fluid">
 
         <div id="logo" class="pull-left">
-            <h1><a href="#intro" class="scrollto">BizPage</a></h1>
+            <h1><a href="/" class="scrollto">ArticLe</a></h1>
         </div>
 
         <nav id="nav-menu-container">
             <ul class="nav-menu">
-                <li class="menu-active"><a href="/">Home</a></li>
-                <li><a href="#article">article</a></li>
                 <li>
                     <a th:if="${USR_IDZ != null}" href="/api/check/admin">dashboard</a>
                 </li>
                 <li>
                     <a th:if="${USR_IDZ != null}" href="/api/check/logout">logout</a>
-                </li>
-                <li>
-                    <a th:if="${USR_IDZ == null}" href="/api/check/register">Register</a>
-                </li>
-                <li>
-                    <a th:if="${USR_IDZ == null}" href="/api/check/signin">Sign In</a>
                 </li>
             </ul>
         </nav><!-- #nav-menu-container -->
