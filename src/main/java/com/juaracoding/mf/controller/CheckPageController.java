@@ -23,13 +23,6 @@ public class CheckPageController {
     private Map<String,Object> objectMapper = new HashMap<String,Object>();
     private MappingAttribute mappingAttribute = new MappingAttribute();
 
-    @GetMapping("/home")
-    public String pageHome(Model model, WebRequest request)
-    {
-        mappingAttribute.setAttribute(model,objectMapper,request);
-        return "home";
-    }
-
     @GetMapping("/signin")
     public String pageOne(Model model)
     {
@@ -39,7 +32,14 @@ public class CheckPageController {
         users.setCaptcha("");
         users.setImage(CaptchaUtils.encodeBase64(captcha));
         model.addAttribute("usr",users);
-        return "authz_signin";
+        return "authz/authz_signin";
+    }
+
+    @GetMapping("/home")
+    public String pageHome(Model model, WebRequest request)
+    {
+        mappingAttribute.setAttribute(model,objectMapper,request);
+        return "home";
     }
 
     @GetMapping("/register")
@@ -47,14 +47,14 @@ public class CheckPageController {
     {
         UserDTO users = new UserDTO();
         model.addAttribute("usr",users);
-        return "authz_register";
+        return "authz/authz_register";
     }
 
     @GetMapping("/verify")
     public String pageThree(Model model)
     {
         model.addAttribute("usr",new Userz());
-        return "authz_verifikasi";
+        return "authz/authz_verifikasi";
     }
 
     @GetMapping("/admin")
@@ -81,14 +81,13 @@ public class CheckPageController {
     {
         ForgetPasswordDTO forgetPasswordDTO = new ForgetPasswordDTO();
         model.addAttribute("forgetpwd",forgetPasswordDTO);
-        return "authz_forget_pwd_email";
+        return "authz/authz_forget_pwd_email";
     }
 
     @GetMapping("/logout")
     public String destroySession(HttpServletRequest request) {
         request.getSession().invalidate();
-//        return "redirect:/api/check/signin";
-        return "redirect:/";
+        return "redirect:/api/check/signin";
     }
 
 }
