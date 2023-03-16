@@ -4,6 +4,8 @@ package com.juaracoding.mf.service;
 import com.juaracoding.mf.configuration.OtherConfig;
 import com.juaracoding.mf.core.BcryptImpl;
 import com.juaracoding.mf.dto.ForgetPasswordDTO;
+import com.juaracoding.mf.dto.UserDTO;
+import com.juaracoding.mf.handler.ResourceNotFoundException;
 import com.juaracoding.mf.handler.ResponseHandler;
 import com.juaracoding.mf.model.Akses;
 import com.juaracoding.mf.model.Userz;
@@ -11,16 +13,19 @@ import com.juaracoding.mf.repo.UserRepo;
 import com.juaracoding.mf.utils.ConstantMessage;
 import com.juaracoding.mf.utils.ExecuteSMTP;
 import com.juaracoding.mf.utils.LoggingFile;
+import com.juaracoding.mf.utils.TransformToDTO;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 @Service
 @Transactional
@@ -29,17 +34,35 @@ public class UserService {
     private UserRepo userRepo;
 
     private String [] strExceptionArr = new String[2];
+    @Autowired
+    private ModelMapper modelMapper;
+
+    private String[] strProfile = new String[3];
+
+    private TransformToDTO transformToDTO = new TransformToDTO();
+    private Map<String,String> mapColumnSearch = new HashMap<String,String>();
+    private Map<String,Object> objectMapper = new HashMap<String,Object>();
+
+    private StringBuilder stringBuilder = new StringBuilder();
 
     @Autowired
     public UserService(UserRepo userService) {
+        mapColumn();
         strExceptionArr[0] = "UserService";
         this.userRepo = userService;
+    }
+    private void mapColumn()
+    {
+        mapColumnSearch.put("id","ID USER");
+        mapColumnSearch.put("nama","NAMA LENGKAP");
+        mapColumnSearch.put("email","EMAIL");
+        mapColumnSearch.put("noHP","NO HP");
     }
 
     public Map<String,Object> checkRegis(Userz userz, WebRequest request) {
         int intVerification = new Random().nextInt(100000,999999);
         List<Userz> listUserResult = userRepo.findByEmailOrNoHPOrUsername(userz.getEmail(),userz.getNoHP(),userz.getUsername());//INI VALIDASI USER IS EXISTS
-        String emailForSMTP = "";
+        String emailForSMTP = userz.getEmail();
         try
         {
             if(listUserResult.size()!=0)//kondisi mengecek apakah user terdaftar
@@ -80,16 +103,19 @@ public class UserService {
                 userz.setToken(BcryptImpl.hash(String.valueOf(intVerification)));
                 userRepo.save(userz);
             }
+
+            strProfile[0]="TOKEN UNTUK VERIFIKASI EMAIL";
+            strProfile[1]=userz.getNamaLengkap();
+            strProfile[2]=String.valueOf(intVerification);
+
             /*EMAIL NOTIFICATION*/
             if(OtherConfig.getFlagSMTPActive().equalsIgnoreCase("y") && !emailForSMTP.equals(""))
             {
-                new ExecuteSMTP().sendSMTPToken(emailForSMTP,"VERIFIKASI TOKEN REGISTRASI",
-                        "TOKEN UNTUK VERIFIKASI EMAIL",String.valueOf(intVerification));
+                new ExecuteSMTP().sendSMTPToken(emailForSMTP,"VERIFIKASI TOKEN REGISTRASI",strProfile,"\\data\\ver_regis.html");
             }
-            System.out.println("VERIFIKASI -> "+intVerification);
         }catch (Exception e)
         {
-            strExceptionArr[1]="checkRegis(Userz userz) --- LINE 92";
+            strExceptionArr[1]="checkRegis(Userz userz) --- LINE 70";
             LoggingFile.exceptionStringz(strExceptionArr,e, OtherConfig.getFlagLogging());
             return new ResponseHandler().generateModelAttribut(ConstantMessage.ERROR_FLOW_INVALID,
                     HttpStatus.NOT_FOUND,null,"FE01001",request);
@@ -119,7 +145,7 @@ public class UserService {
             else
             {
                 return new ResponseHandler().generateModelAttribut(ConstantMessage.ERROR_USER_NOT_EXISTS,
-                    HttpStatus.NOT_FOUND,null,"FV01006",request);
+                        HttpStatus.NOT_FOUND,null,"FV01006",request);
             }
         }
         catch (Exception e)
@@ -136,7 +162,7 @@ public class UserService {
     @Transactional(rollbackFor = Exception.class)
     public Map<String,Object> doLogin(Userz userz, WebRequest request) {
         userz.setUsername(userz.getEmail());
-        userz.setNoHP(userz.getNoHP());
+        userz.setNoHP(userz.getEmail());
         List<Userz> listUserResult = userRepo.findByEmailOrNoHPOrUsername(userz.getEmail(),userz.getNoHP(),userz.getUsername());//DATANYA PASTI HANYA 1
         Userz nextUser = null;
         try
@@ -159,6 +185,7 @@ public class UserService {
                         HttpStatus.NOT_ACCEPTABLE,null,"FV01008",request);
             }
         }
+
         catch (Exception e)
         {
             strExceptionArr[1]="doLogin(Userz userz,WebRequest request)  --- LINE 132";
@@ -175,16 +202,16 @@ public class UserService {
         List<Userz> listUserResult = userRepo.findByEmail(emailz);//DATANYA PASTI HANYA 1
         String emailForSMTP = "";
         int intVerification = 0;
+        Userz userz = null;
         try
         {
             if(listUserResult.size()!=0)
             {
                 intVerification = new Random().nextInt(100000,999999);
-                Userz userz = listUserResult.get(0);
+                userz = listUserResult.get(0);
                 userz.setToken(BcryptImpl.hash(String.valueOf(intVerification)));
                 userz.setModifiedDate(new Date());
                 userz.setModifiedBy(Integer.parseInt(userz.getIdUser().toString()));
-                System.out.println("New Token -> "+intVerification);
                 emailForSMTP = userz.getEmail();
             }
             else
@@ -205,11 +232,16 @@ public class UserService {
                 call method send SMTP
          */
 
+        strProfile[0]="TOKEN BARU UNTUK VERIFIKASI GANTI PASSWORD";
+        strProfile[1]=userz.getNamaLengkap();
+        strProfile[2]=String.valueOf(intVerification);
+
+        /*EMAIL NOTIFICATION*/
         if(OtherConfig.getFlagSMTPActive().equalsIgnoreCase("y") && !emailForSMTP.equals(""))
         {
-            new ExecuteSMTP().sendSMTPToken(emailForSMTP,"VERIFIKASI TOKEN GANTI PASSWORD",
-                    "TOKEN BARU UNTUK VERIFIKASI GANTI PASSWORD",String.valueOf(intVerification));
+            new ExecuteSMTP().sendSMTPToken(emailForSMTP,"VERIFIKASI TOKEN REGISTRASI" ,strProfile,"\\data\\ver_token_baru.html");
         }
+
 
         return new ResponseHandler().generateModelAttribut(ConstantMessage.SUCCESS_LOGIN,
                 HttpStatus.OK,null,null,request);
@@ -220,6 +252,7 @@ public class UserService {
     {
         int intVerification =0;
         List<Userz> listUserResults = userRepo.findByEmail(email);
+        Userz userz = null;
         try
         {
             if(listUserResults.size()==0)
@@ -228,11 +261,10 @@ public class UserService {
                         HttpStatus.NOT_FOUND,null,"FV01010",request);
             }
             intVerification = new Random().nextInt(100000,999999);
-            Userz userz = listUserResults.get(0);
+            userz = listUserResults.get(0);
             userz.setToken(BcryptImpl.hash(String.valueOf(intVerification)));
             userz.setModifiedDate(new Date());
             userz.setModifiedBy(Integer.parseInt(userz.getIdUser().toString()));
-            System.out.println("New Forget Password Token -> "+intVerification);
         }
         catch (Exception e)
         {
@@ -241,15 +273,17 @@ public class UserService {
             return new ResponseHandler().generateModelAttribut(ConstantMessage.ERROR_FLOW_INVALID,
                     HttpStatus.INTERNAL_SERVER_ERROR,null,"FE01005",request);
         }
-        /*
-            INI BUTUH
 
-         */
-        if(OtherConfig.getFlagSMTPActive().equalsIgnoreCase("y") && !email.equals(""))
+        strProfile[0]="TOKEN UNTUK VERIFIKASI LUPA PASSWORD";
+        strProfile[1]=userz.getNamaLengkap();
+        strProfile[2]=String.valueOf(intVerification);
+
+        /*EMAIL NOTIFICATION*/
+        if(OtherConfig.getFlagSMTPActive().equalsIgnoreCase("y") && !userz.getEmail().equals(""))
         {
-            new ExecuteSMTP().sendSMTPToken(email,"VERIFIKASI TOKEN LUPA PASSWORD",
-                    "TOKEN UNTUK VERIFIKASI LUPA PASSWORD",String.valueOf(intVerification));
+            new ExecuteSMTP().sendSMTPToken(userz.getEmail(),"VERIFIKASI TOKEN REGISTRASI" ,strProfile,"\\data\\ver_lupa_pwd.html");
         }
+
         return new ResponseHandler().generateModelAttribut(ConstantMessage.SUCCESS_SEND_NEW_TOKEN,
                 HttpStatus.OK,null,null,request);
     }
@@ -294,7 +328,6 @@ public class UserService {
     {
         String emailz = forgetPasswordDTO.getEmail();
         String newPassword = forgetPasswordDTO.getNewPassword();
-        String oldPassword = forgetPasswordDTO.getOldPassword();
         String confirmPassword = forgetPasswordDTO.getConfirmPassword();
 
         List<Userz> listUserResults = userRepo.findByEmail(emailz);
@@ -307,16 +340,6 @@ public class UserService {
             }
 
             Userz userz = listUserResults.get(0);
-            if(!BcryptImpl.verifyHash(oldPassword+userz.getUsername(),userz.getPassword()))//kalau password lama tidak sama dengan yang diinput
-            {
-                return new ResponseHandler().generateModelAttribut(ConstantMessage.ERROR_PASSWORD_NOT_SAME,
-                        HttpStatus.NOT_FOUND,null,"FV01013",request);
-            }
-            if(oldPassword.equals(newPassword))//PASSWORD BARU SAMA DENGAN PASSWORD LAMA
-            {
-                return new ResponseHandler().generateModelAttribut(ConstantMessage.ERROR_PASSWORD_IS_SAME,
-                        HttpStatus.NOT_FOUND,null,"FV01014",request);
-            }
             if(!confirmPassword.equals(newPassword))//PASSWORD BARU DENGAN PASSWORD KONFIRMASI TIDAK SAMA
             {
                 return new ResponseHandler().generateModelAttribut(ConstantMessage.ERROR_PASSWORD_CONFIRM_FAILED,
@@ -324,10 +347,11 @@ public class UserService {
             }
 
             userz.setPassword(BcryptImpl.hash(String.valueOf(newPassword+userz.getUsername())));
+            userz.setIsDelete((byte)1);
             userz.setModifiedDate(new Date());
             userz.setModifiedBy(Integer.parseInt(userz.getIdUser().toString()));
-            System.out.println("New Forget Password -> "+newPassword);
         }
+
         catch (Exception e)
         {
             strExceptionArr[1]="confirmPasswordChange(ForgetPasswordDTO forgetPasswordDTO, WebRequest request)  --- LINE 297";
@@ -338,6 +362,14 @@ public class UserService {
         return new ResponseHandler().generateModelAttribut(ConstantMessage.SUCCESS_CHANGE_PWD,
                 HttpStatus.OK,null,null,request);
     }
+
+
+
+
+
+
+
+
 
 
 
