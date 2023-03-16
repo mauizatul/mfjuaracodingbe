@@ -60,6 +60,18 @@ public class Article {
         end audit trails
      */
 
+    @ManyToOne
+    @JoinColumn(name = "IDCategoryArticle")
+    private CategoryArticle categoryArticle;
+
+    public CategoryArticle getCategoryArticle() {
+        return categoryArticle;
+    }
+
+    public void setCategoryArticle(CategoryArticle categoryArticle) {
+        this.categoryArticle = categoryArticle;
+    }
+
     public Long getIdArticle() {
         return idArticle;
     }
