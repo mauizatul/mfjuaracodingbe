@@ -18,4 +18,6 @@ import java.util.List;
 public interface ArticleRepo extends JpaRepository<Article,Long> {
     List<Article> findByIsShow(byte isShow);
 
+//    Article findBySlug(String slug);
+
 }

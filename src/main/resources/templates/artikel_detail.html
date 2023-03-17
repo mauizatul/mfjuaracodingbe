@@ -43,7 +43,7 @@
 <div id="main-wrapper" class="article_detail">
     <section class="detail-content">
         <div class="banner-teks">
-            <div class="category">Kategori</div>
+            <div th:utext="${articles.categoryArticle.nameCategoryArticle}" class="category">Kategori</div>
             <div th:utext="${articles.titleArticle}" class="title">Ini Adalah Title</div>
             <div class="border-bot-title"></div>
             <img alt="" th:src="${articles.imageArticle}" style="height:1128px; width:1366px">

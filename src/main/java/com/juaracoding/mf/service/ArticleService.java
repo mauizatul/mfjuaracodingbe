@@ -75,6 +75,11 @@ public class ArticleService {
         return article;
     }
 
+//    public Article getArticleBySlug(String slug) {
+//        return articleRepo.findBySlug(slug);
+//
+//    }
+
     public Map<String, Object> updateArticle(Article article, WebRequest request) {
         Object strUserIdz = request.getAttribute("USR_ID",1);
         try {

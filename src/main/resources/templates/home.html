@@ -127,16 +127,16 @@
         <h3 class="section-title">Our article</h3>
       </header>
 
-      <div class="row">
-        <div class="col-lg-12">
-          <ul id="article-flters">
-            <li data-filter="*" class="filter-active">All</li>
-            <li data-filter=".filter-app">App</li>
-            <li data-filter=".filter-card">Card</li>
-            <li data-filter=".filter-web">Web</li>
-          </ul>
-        </div>
-      </div>
+<!--      <div class="row">-->
+<!--        <div class="col-lg-12">-->
+<!--          <ul id="article-flters">-->
+<!--            <li data-filter="*" class="filter-active">All</li>-->
+<!--            <li data-filter=".filter-app">App</li>-->
+<!--            <li data-filter=".filter-card">Card</li>-->
+<!--            <li data-filter=".filter-web">Web</li>-->
+<!--          </ul>-->
+<!--        </div>-->
+<!--      </div>-->
 
       <div class="row article-container">
         <div th:each = "article: ${articles}" class="col-lg-4 col-md-6 article-item wow fadeInUp">
@@ -149,8 +149,7 @@
 
             <div class="article-info">
               <h4><a th:text = "${article.titleArticle}" th:href="'/articles/'+${article.idArticle}"></a></h4>
-<!--              <p th:text = "${article.titleArticle}"></p>-->
-              <p>Kategori</p>
+              <p th:text = "${article.categoryArticle.nameCategoryArticle}"></p>
             </div>
           </div>
         </div>

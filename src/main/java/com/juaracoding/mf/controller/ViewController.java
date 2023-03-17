@@ -9,6 +9,7 @@ Created on 3/7/2023 5:20 PM
 Version 1.0
 */
 
+import com.juaracoding.mf.model.Article;
 import com.juaracoding.mf.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +34,24 @@ public class ViewController {
         model.addAttribute("articles", articleService.getArticleById(Id));
         return "artikel_detail";
     }
+
+//    @GetMapping("/articles/{slug}")
+//    public String viewArticleDetail(@PathVariable("slug") String slug, Model model, WebRequest request) {
+//        model.addAttribute("articles", articleService.getArticleBySlug(slug));
+//        return "artikel_detail";
+//    }
+
+//    @GetMapping("/{slug}")
+//    public ResponseEntity<Article> getBySlug(@PathVariable String slug) {
+//        Article article = articleService.getArticleBySlug(slug);
+//        if (article != null) {
+//            return ResponseEntity.ok(article);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
+
+
 
 //    @GetMapping("/students/{id}")
 //    public String editStudentForm(@PathVariable("id") Long Id, Model model, WebRequest request) {
