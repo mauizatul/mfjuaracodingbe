@@ -91,6 +91,7 @@ public class ArticleController {
             }
         }
         model.addAttribute("article", articleService.getArticleById(Id));
+        model.addAttribute("listCategory", categoryArticleService.findAllCategory());
         return "article/update_article";
     }
 
@@ -112,6 +113,7 @@ public class ArticleController {
         existingArticle.setImageArticle(article.getImageArticle());
         existingArticle.setBodyArticle(article.getBodyArticle());
         existingArticle.setIsShow(article.getIsShow());
+        existingArticle.setCategoryArticle(article.getCategoryArticle());
 
         // save updated article object
         articleService.updateArticle(existingArticle, request);
