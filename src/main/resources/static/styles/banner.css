@@ -3,9 +3,10 @@
   /* border: solid gray 1px; */
   width: 100%;
   height: 600px;
-  background-image: url("https://images.samsung.com/is/image/samsung/p6pim/id/feature/164340620/id-feature-see-everything-you-love-in-vibrant-colors-534794683?$FB_TYPE_K_JPG$");
+  background-image: url('banner.jpg');
   background-repeat: no-repeat;
-  background-position: center top;
+  background-position: center;
+  background-size: cover;
   justify-content: center;
   align-items: center;
   flex-direction: column;
