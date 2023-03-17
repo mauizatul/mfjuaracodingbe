@@ -21,6 +21,7 @@
       <th> ID </th>
       <th> Article Title </th>
       <th> Created Date </th>
+      <th> Category </th>
       <th> Show </th>
       <th> Actions </th>
     </tr>
@@ -30,6 +31,7 @@
       <td th:text="${articles.idArticle}"></td>
       <td th:text="${articles.titleArticle}"></td>
       <td th:text="${articles.createdDate}"></td>
+      <td th:text="${articles.categoryArticle==null}?'':${articles.categoryArticle.nameCategoryArticle}"></td>
       <td>
         <span th:if="${articles.isShow == 1}">Show</span>
         <span th:unless="${articles.isShow == 1}">Hidden</span>
@@ -47,7 +49,7 @@
       <div class = "col-sm-2">
         Total Rows: [[${totalItems}]]
       </div>
-      <div class = "col-sm-1">
+      <div class = "col-sm-10">
 					<span th:each="i: ${#numbers.sequence(1, totalPages)}">
 						<a th:if="${currentPage != i}" th:href="@{'/api/articles2/page/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
 						<span th:unless="${currentPage != i}">[[${i}]]</span>  &nbsp; &nbsp;

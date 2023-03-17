@@ -11,6 +11,7 @@ Version 1.1
 import com.juaracoding.mf.configuration.OtherConfig;
 import com.juaracoding.mf.model.Article;
 import com.juaracoding.mf.service.ArticleService;
+import com.juaracoding.mf.service.CategoryArticleService;
 import com.juaracoding.mf.utils.ConstantMessage;
 import com.juaracoding.mf.utils.MappingAttribute;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +29,13 @@ import java.util.Map;
 @RequestMapping("/api/articles2")
 public class ArticleController {
     private ArticleService articleService;
+    private CategoryArticleService categoryArticleService;
     private MappingAttribute mappingAttribute = new MappingAttribute();
     private Map<String,Object> objectMapper = new HashMap<String,Object>();
     @Autowired
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, CategoryArticleService categoryArticleService) {
         this.articleService = articleService;
+        this.categoryArticleService = categoryArticleService;
     }
 
     // display list of article
@@ -60,6 +63,7 @@ public class ArticleController {
         // create model attribute to bind form data
         Article article = new Article();
         model.addAttribute("article", article);
+        model.addAttribute("listCategory", categoryArticleService.findAllCategory());
         return "article/create_article";
     }
 

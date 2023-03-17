@@ -109,13 +109,13 @@ public class CategoryArticleService {
         return this.categoryArticleRepo.findAll(pageable);
     }
 
-//    public List<CategoryArticle> findAllCategory()
-//    {
-//        return categoryArticleRepo.findAll();
-//        /*
-//            SELECT * FROM MstCategoryProduct
-//         */
-//    }
+    public List<CategoryArticle> findAllCategory()
+    {
+        return categoryArticleRepo.findAll();
+        /*
+            SELECT * FROM MstCategoryProduct
+         */
+    }
 
 
 //    public void saveDataCategory(CategoryArticle categoryArticle){
