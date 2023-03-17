@@ -46,16 +46,17 @@
                 rows="5"></textarea>
     </div>
 
-    <div class="col">
+    <div class="form-group">
+      <label for="categoryArticle">Tampil/Sembunyikan</label>
       <select name="isShow" th:field="*{isShow}"
               id="isShow" class="form-control">
         <option value="" selected="selected" disabled >---pilih---</option>
-        <option value="1">Tampil</option>
+        <option value="1">Tampilkan</option>
         <option value="0">Sembunyikan</option>
       </select>
     </div>
 
-    <div class="col">
+    <div class="form-group">
       <label for="categoryArticle">Category Article</label>
       <select name="categoryArticle" th:field="*{categoryArticle}"
               id="categoryArticle" class="form-control">
